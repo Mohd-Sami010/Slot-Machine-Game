@@ -11,9 +11,6 @@ public class BetManager : MonoBehaviour
     [SerializeField] private int bet2Cost = 20;
     [SerializeField] private int bet3Cost = 50;
 
-    [Header("Default Selection")]
-    [SerializeField, Range(1, 3)] private int startingBetOption = 1;
-
     public int Bet1Cost => bet1Cost;
     public int Bet2Cost => bet2Cost;
     public int Bet3Cost => bet3Cost;
@@ -25,7 +22,7 @@ public class BetManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        SelectedBet = GetBetCost(startingBetOption);
+        SelectedBet = 5;
     }
 
     public void SelectBet(int amount)
@@ -34,16 +31,5 @@ public class BetManager : MonoBehaviour
 
         SelectedBet = amount;
         OnBetChanged?.Invoke(SelectedBet);
-    }
-
-    private int GetBetCost(int option)
-    {
-        switch (option)
-        {
-            case 1: return bet1Cost;
-            case 2: return bet2Cost;
-            case 3: return bet3Cost;
-            default: return bet1Cost;
-        }
     }
 }

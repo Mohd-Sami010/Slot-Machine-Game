@@ -1,15 +1,21 @@
 using UnityEngine;
+using System;
 
 public class SlotMachineController : MonoBehaviour
 {
     public static SlotMachineController Instance { get; private set; }
 
-    public event System.Action OnSpin;
-    public event System.Action OnSpinComplete;
+    public event Action OnSpin;
+    public event Action OnSpinComplete;
+    public event Action OnInsufficientFunds;
 
     [SerializeField] private Sprite[] symbols;
     [SerializeField] private ReelController[] reels;
 
+    [Header("Payout Configuration")]
+    [SerializeField] private PayoutManager payoutManager;
+
+    public int CurrentSpinBet { get; private set; }
     private bool isSpinning = false;
     private int reelsStopped = 0;
     
@@ -21,20 +27,32 @@ public class SlotMachineController : MonoBehaviour
     }
     public void Spin()
     {
-        if (isSpinning) return;
+        if (isSpinning || CurrentSpinBet > WalletManager.Instance.Balance) return;
 
         isSpinning = true;
         OnSpin?.Invoke();
 
         for (int i = 0; i < reels.Length; i++)
         {
-            results[i] = Random.Range(0, symbols.Length);
+            results[i] = UnityEngine.Random.Range(0, symbols.Length);
         }
         for (int i = 0; i < reels.Length; i++)
         {
             float spinDuration = 0.8f + (i * 0.4f);
             reels[i].PlaySpin(symbols, symbols[results[i]], spinDuration);
         }
+        int bet = BetManager.Instance.SelectedBet;
+
+        if (!WalletManager.Instance.TrySpend(bet))
+        {
+            Debug.Log("Insufficient balance!");
+            OnInsufficientFunds?.Invoke();
+            return;
+        }
+
+        CurrentSpinBet = bet;
+        isSpinning = true;
+        reelsStopped = 0;
     }
     public void OnReelStopped()
     {
@@ -49,14 +67,28 @@ public class SlotMachineController : MonoBehaviour
     {
         isSpinning = false;
 
-        if (results[0] == results[1] && results[1] == results[2])
+        if (CheckWin())
         {
-            Debug.Log("JACKPOT! YOU WIN!");
+            Sprite winningSymbol = symbols[results[0]];
+
+            int payout = payoutManager.CalculatePayout(winningSymbol, CurrentSpinBet);
+
+            WalletManager.Instance.AddCoins(payout);
+
+            Debug.Log($"WIN! Symbol: {winningSymbol.name}");
+            Debug.Log($"Payout: {payout}G");
         }
-        else
-        {
-            Debug.Log("Better luck next time!");
-        }
+        else Debug.Log("Better luck next time!");
+
         OnSpinComplete?.Invoke();
+    }
+    private bool CheckWin()
+    {
+        if (results == null || results.Length == 0) return false;
+
+        for (int i = 1; i < results.Length; i++){
+            if (results[i] != results[0]) return false;
+        }
+        return true;
     }
 }
