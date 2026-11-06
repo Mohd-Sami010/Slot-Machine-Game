@@ -68,7 +68,6 @@ public class ReelController : MonoBehaviour
         }
 
         IsSpinning = false;
-        Debug.Log($"{name} stopped!");
         SlotMachineController.Instance.OnReelStopped();
     }
     private IEnumerator AnimateStep(float duration)

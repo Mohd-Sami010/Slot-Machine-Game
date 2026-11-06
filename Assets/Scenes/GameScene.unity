@@ -127,6 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 49067129}
+  - component: {fileID: 49067130}
   m_Layer: 0
   m_Name: Lever
   m_TagString: Untagged
@@ -151,6 +152,20 @@ Transform:
   - {fileID: 872432250}
   m_Father: {fileID: 1105731724}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &49067130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49067128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c47f5f9700d7747935b79b19e5faec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leverUpSprite: {fileID: 224078961}
+  leverDownSprite: {fileID: 872432251}
 --- !u!1 &208741158
 GameObject:
   m_ObjectHideFlags: 0
