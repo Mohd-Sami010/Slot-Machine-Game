@@ -5,7 +5,11 @@ public class SlotMachineController : MonoBehaviour
     public static SlotMachineController Instance { get; private set; }
 
     public event System.Action OnSpin;
-    public event System.Action<int, int, int> OnResult;
+
+    [SerializeField] private Sprite[] symbols;
+    [SerializeField] private ReelController[] reels;
+
+    private bool isSpinning = false;
 
     private void Awake()
     {
@@ -13,16 +17,32 @@ public class SlotMachineController : MonoBehaviour
     }
     public void Spin()
     {
+        if (isSpinning) return;
+
+        isSpinning = true;
         Debug.Log("Spinning the slot machine!");
         OnSpin?.Invoke();
-        Invoke(nameof(ShowResult), 2f);
+        Invoke(nameof(ShowResult), 1f);
     }
     private void ShowResult()
     {
-        int slot1 = Random.Range(0, 4);
-        int slot2 = Random.Range(0, 4);
-        int slot3 = Random.Range(0, 4);
+        int[] results = new int[reels.Length];
 
-        OnResult?.Invoke(slot1, slot2, slot3);
+        for (int i = 0; i < reels.Length; i++)
+        {
+            results[i] = Random.Range(0, symbols.Length);
+            reels[i].DisplaySymbol(symbols[results[i]]);
+        }
+
+        isSpinning = false;
+
+        if (results[0] == results[1] && results[1] == results[2])
+        {
+            Debug.Log("JACKPOT! YOU WIN!");
+        }
+        else
+        {
+            Debug.Log("Better luck next time!");
+        }
     }
 }

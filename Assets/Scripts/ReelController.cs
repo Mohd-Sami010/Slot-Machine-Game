@@ -1,23 +1,15 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ReelController : MonoBehaviour
-{
-    [SerializeField] private Sprite[] symbols;
-    
-    [Header("Reels")]
-    [SerializeField] private SpriteRenderer reel1;
-    [SerializeField] private SpriteRenderer reel2;
-    [SerializeField] private SpriteRenderer reel3;
+{    
+    private SpriteRenderer symbolSpriteRenderer;
 
-    private void Start()
+    private void Awake()
     {
-        SlotMachineController.Instance.OnResult += ShowResult;
+        symbolSpriteRenderer = GetComponent<SpriteRenderer>();
     }
-    private void ShowResult(int slot1, int slot2, int slot3)
+    public void DisplaySymbol(Sprite symbolSprite)
     {
-        reel1.sprite = symbols[slot1];
-        reel2.sprite = symbols[slot2];
-        reel3.sprite = symbols[slot3];
+        symbolSpriteRenderer.sprite = symbolSprite;
     }
 }

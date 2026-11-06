@@ -343,7 +343,6 @@ GameObject:
   m_Component:
   - component: {fileID: 406799178}
   - component: {fileID: 406799179}
-  - component: {fileID: 406799180}
   m_Layer: 0
   m_Name: Slots
   m_TagString: Untagged
@@ -424,26 +423,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &406799180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406799177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf428bf339903e4b8be347fbc5d670f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  symbols:
-  - {fileID: 21300000, guid: ae6f8afa26339654f8c1cb3ded94d2db, type: 3}
-  - {fileID: 21300000, guid: 43ccd90975a68444092c550fc5bc9cf5, type: 3}
-  - {fileID: 21300000, guid: dd58616f843688b4d8933ddad6fe700b, type: 3}
-  - {fileID: 21300000, guid: d8d6cbe934a28ec4f8603cf01a52139d, type: 3}
-  reel1: {fileID: 815111046}
-  reel2: {fileID: 2046753396}
-  reel3: {fileID: 1225835340}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,6 +835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 815111045}
   - component: {fileID: 815111046}
+  - component: {fileID: 815111047}
   m_Layer: 0
   m_Name: Reel (1)
   m_TagString: Untagged
@@ -933,6 +913,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &815111047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815111044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf428bf339903e4b8be347fbc5d670f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolSpriteRenderer: {fileID: 0}
 --- !u!1 &846866797
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,6 +1393,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c488d91c49b15347a0ca1df21a44e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  symbols:
+  - {fileID: 21300000, guid: ae6f8afa26339654f8c1cb3ded94d2db, type: 3}
+  - {fileID: 21300000, guid: 43ccd90975a68444092c550fc5bc9cf5, type: 3}
+  - {fileID: 21300000, guid: dd58616f843688b4d8933ddad6fe700b, type: 3}
+  - {fileID: 21300000, guid: d8d6cbe934a28ec4f8603cf01a52139d, type: 3}
+  reels:
+  - {fileID: 815111047}
+  - {fileID: 2046753397}
+  - {fileID: 1225835341}
 --- !u!1 &1140460853
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,6 +1548,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1225835339}
   - component: {fileID: 1225835340}
+  - component: {fileID: 1225835341}
   m_Layer: 0
   m_Name: Reel (3)
   m_TagString: Untagged
@@ -1623,6 +1626,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1225835341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225835338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf428bf339903e4b8be347fbc5d670f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolSpriteRenderer: {fileID: 0}
 --- !u!1 &1489622472
 GameObject:
   m_ObjectHideFlags: 0
@@ -2020,6 +2036,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2046753395}
   - component: {fileID: 2046753396}
+  - component: {fileID: 2046753397}
   m_Layer: 0
   m_Name: Reel (2)
   m_TagString: Untagged
@@ -2097,6 +2114,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2046753397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046753394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf428bf339903e4b8be347fbc5d670f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolSpriteRenderer: {fileID: 0}
 --- !u!1001 &7901869097354824170
 PrefabInstance:
   m_ObjectHideFlags: 0
