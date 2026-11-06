@@ -8,6 +8,7 @@ public class SlotMachineController : MonoBehaviour
     public event Action OnSpin;
     public event Action OnSpinComplete;
     public event Action OnInsufficientFunds;
+    public event Action OnGameOver;
 
     [SerializeField] private Sprite[] symbols;
     [SerializeField] private ReelController[] reels;
@@ -27,7 +28,7 @@ public class SlotMachineController : MonoBehaviour
     }
     public void Spin()
     {
-        if (isSpinning || CurrentSpinBet > WalletManager.Instance.Balance) return;
+        if (isSpinning || BetManager.Instance.SelectedBet > WalletManager.Instance.Balance) return;
 
         isSpinning = true;
         OnSpin?.Invoke();
@@ -81,6 +82,12 @@ public class SlotMachineController : MonoBehaviour
         else Debug.Log("Better luck next time!");
 
         OnSpinComplete?.Invoke();
+        if (WalletManager.Instance.Balance < BetManager.Instance.Bet1Cost &&
+            WalletManager.Instance.Balance < BetManager.Instance.Bet2Cost &&
+            WalletManager.Instance.Balance < BetManager.Instance.Bet3Cost)
+        {
+            OnGameOver?.Invoke();
+        }
     }
     private bool CheckWin()
     {

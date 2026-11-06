@@ -10,6 +10,7 @@ public class WalletManager : MonoBehaviour
     [SerializeField] private int startingBalance = 500;
 
     public int Balance { get; private set; }
+    public int Score { get; private set;}
 
     public event Action<int> OnBalanceChanged;
 
@@ -18,6 +19,7 @@ public class WalletManager : MonoBehaviour
         Instance = this;
 
         Balance = startingBalance;
+        Score = Balance;
         UpdateBalanceUI();
     }
 
@@ -36,6 +38,9 @@ public class WalletManager : MonoBehaviour
         if (amount <= 0) return;
 
         Balance += amount;
+
+        if (Balance > Score) Score = Balance;
+        if (Balance > PlayerPrefs.GetInt("HighScore", 0)) PlayerPrefs.SetInt("HighScore", Balance);
         UpdateBalanceUI();
     }
 
