@@ -24,7 +24,6 @@ public class SlotMachineController : MonoBehaviour
         if (isSpinning) return;
 
         isSpinning = true;
-        Debug.Log("Spinning the slot machine!");
         OnSpin?.Invoke();
 
         for (int i = 0; i < reels.Length; i++)
