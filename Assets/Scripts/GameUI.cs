@@ -72,6 +72,9 @@ public class GameUI : MonoBehaviour
     {
         betButtonsPanel.SetActive(true);
         betButtonsAnimator.SetTrigger("Show");
+
+        EnableOrDisableBetButtons(BetManager.Instance.SelectedBet);
+        DisableOutOfBalanceBetButtons();
     }
 
     private void UpdateBalanceUI(int newBalance)

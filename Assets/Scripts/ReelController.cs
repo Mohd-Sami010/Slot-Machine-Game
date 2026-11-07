@@ -82,9 +82,9 @@ public class ReelController : MonoBehaviour
         }
 
         IsSpinning = false;
-        SlotMachineController.Instance.OnReelStopped();
         highlightedSymbolBackground.SetActive(true);
         highlightedSymbolBackground.GetComponent<SpriteRenderer>().color = defaultBackgroundColor;
+        SlotMachineController.Instance.OnReelStopped();
     }
     private IEnumerator AnimateStep(float duration)
     {
