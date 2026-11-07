@@ -4,26 +4,34 @@ using UnityEngine;
 public class PayoutManager : MonoBehaviour
 {
     [System.Serializable]
-    public class SymbolPayout
+    public class SymbolCombination
     {
-        public Sprite symbol;
-        [Min(0)] public int multiplier = 1;
+        public Sprite[] symbols = new Sprite[3];
+        public int multiplier = 1;
     }
 
-    [Header("Symbol Payout Configuration")]
-    [SerializeField] private SymbolPayout[] symbolPayouts;
+    [Header("Winning Combinations")]
+    [SerializeField] private SymbolCombination[] combinations;
 
-    public int CalculatePayout(Sprite winningSymbol, int betAmount)
+    public int CalculatePayout(Sprite[] results, int betAmount)
     {
-        foreach (SymbolPayout payout in symbolPayouts)
+        foreach (SymbolCombination combination in combinations)
         {
-            if (payout.symbol == winningSymbol)
-            {
-                return betAmount * payout.multiplier;
-            }
-        }
+            if (combination.symbols == null || combination.symbols.Length != results.Length) continue;
 
-        Debug.LogWarning($"No payout configured for {winningSymbol.name}");
+            bool isMatch = true;
+
+            for (int i = 0; i < results.Length; i++)
+            {
+                if (combination.symbols[i] != results[i])
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+
+            if (isMatch) return betAmount * combination.multiplier;
+        }
         return 0;
     }
 }

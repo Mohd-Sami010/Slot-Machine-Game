@@ -20,31 +20,28 @@ public class SlotMachineController : MonoBehaviour
     private bool isSpinning = false;
     private int reelsStopped = 0;
     
-    int[] results = new int[3];
+    int[] results;
 
     private void Awake()
     {
         Instance = this;
+        results = new int[reels.Length];
     }
+    
     public void Spin()
     {
-        if (isSpinning || BetManager.Instance.SelectedBet > WalletManager.Instance.Balance) return;
+        if (isSpinning) return;
 
-        isSpinning = true;
-        OnSpin?.Invoke();
-
-        for (int i = 0; i < reels.Length; i++)
+        if (BetManager.Instance == null || WalletManager.Instance == null || payoutManager == null ||
+            reels == null || reels.Length == 0 || symbols == null || symbols.Length == 0)
         {
-            results[i] = UnityEngine.Random.Range(0, symbols.Length);
-        }
-        for (int i = 0; i < reels.Length; i++)
-        {
-            float spinDuration = 0.8f + (i * 0.4f);
-            reels[i].PlaySpin(symbols, symbols[results[i]], spinDuration);
+            Debug.LogError("Slot machine is not configured!");
+            return;
         }
         int bet = BetManager.Instance.SelectedBet;
 
-        if (!WalletManager.Instance.TrySpend(bet))
+        // Deduct bet BEFORE starting the spin.
+        if (bet > WalletManager.Instance.Balance || !WalletManager.Instance.TrySpend(bet))
         {
             Debug.Log("Insufficient balance!");
             OnInsufficientFunds?.Invoke();
@@ -54,7 +51,21 @@ public class SlotMachineController : MonoBehaviour
         CurrentSpinBet = bet;
         isSpinning = true;
         reelsStopped = 0;
+
+        for (int i = 0; i < reels.Length; i++)
+        {
+            results[i] = UnityEngine.Random.Range(0, symbols.Length);
+        }
+        OnSpin?.Invoke();
+
+        // Start reel animations.
+        for (int i = 0; i < reels.Length; i++)
+        {
+            float spinDuration = 0.8f + (i * 0.4f);
+            reels[i].PlaySpin(symbols, symbols[results[i]], spinDuration);
+        }
     }
+
     public void OnReelStopped()
     {
         reelsStopped++;
@@ -64,38 +75,40 @@ public class SlotMachineController : MonoBehaviour
             CompleteSpin();
         }
     }
+    
     private void CompleteSpin()
     {
         isSpinning = false;
 
-        if (CheckWin())
+        // Convert result indices into their corresponding sprites.
+        Sprite[] finalCombination = new Sprite[results.Length];
+
+        for (int i = 0; i < results.Length; i++)
         {
-            Sprite winningSymbol = symbols[results[0]];
+            finalCombination[i] = symbols[results[i]];
+        }
 
-            int payout = payoutManager.CalculatePayout(winningSymbol, CurrentSpinBet);
+        int payout = payoutManager.CalculatePayout(finalCombination, CurrentSpinBet);
 
+        if (payout > 0)
+        {
             WalletManager.Instance.AddCoins(payout);
-
-            Debug.Log($"WIN! Symbol: {winningSymbol.name}");
-            Debug.Log($"Payout: {payout}G");
+            Debug.Log($"YOU WIN! Payout: {payout}G");
         }
-        else Debug.Log("Better luck next time!");
+        else Debug.Log("No winning combination.");
 
-        OnSpinComplete?.Invoke();
-        if (WalletManager.Instance.Balance < BetManager.Instance.Bet1Cost &&
-            WalletManager.Instance.Balance < BetManager.Instance.Bet2Cost &&
-            WalletManager.Instance.Balance < BetManager.Instance.Bet3Cost)
+        try
         {
-            OnGameOver?.Invoke();
+            OnSpinComplete?.Invoke();
         }
-    }
-    private bool CheckWin()
-    {
-        if (results == null || results.Length == 0) return false;
-
-        for (int i = 1; i < results.Length; i++){
-            if (results[i] != results[0]) return false;
+        finally
+        {
+            if (WalletManager.Instance.Balance < BetManager.Instance.Bet1Cost &&
+                WalletManager.Instance.Balance < BetManager.Instance.Bet2Cost &&
+                WalletManager.Instance.Balance < BetManager.Instance.Bet3Cost)
+            {
+                OnGameOver?.Invoke();
+            }
         }
-        return true;
     }
 }
