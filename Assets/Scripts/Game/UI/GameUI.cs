@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
-    [SerializeField] private GameObject clickLeverPrompt;
     [SerializeField] private GameObject betButtonsPanel;
     [Header("UI Text")]
     [SerializeField] private TextMeshProUGUI balanceText;
@@ -46,21 +45,16 @@ public class GameUI : MonoBehaviour
 
         bet1Button.onClick.AddListener(() => {
             BetManager.Instance.SelectBet(BetManager.Instance.Bet1Cost);
-            clickLeverPrompt.SetActive(true);
         });
         bet2Button.onClick.AddListener(() => {
             BetManager.Instance.SelectBet(BetManager.Instance.Bet2Cost);
-            clickLeverPrompt.SetActive(true);
         });
         bet3Button.onClick.AddListener(() => {
             BetManager.Instance.SelectBet(BetManager.Instance.Bet3Cost);
-            clickLeverPrompt.SetActive(true);
         });
     }
     private void OnSpinStarted()
     {
-        clickLeverPrompt.SetActive(false);
-        
         betButtonsAnimator.SetTrigger("Hide");
         Invoke(nameof(DeactiveBetButtons), 0.2f);
     }

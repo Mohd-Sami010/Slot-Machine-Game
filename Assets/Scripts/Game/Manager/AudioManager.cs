@@ -25,8 +25,11 @@ public class AudioManager : MonoBehaviour
     {
         if (audioSource == null) return;
 
-        float pitch = Random.Range(0.9f, 1.1f);
-        audioSource.pitch = pitch;
+        if (randomPitch)
+        {
+            float pitch = Random.Range(0.9f, 1.1f);
+            audioSource.pitch = pitch;
+        }
         audioSource.Play();
     }
 }
