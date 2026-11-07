@@ -24,6 +24,18 @@ public class BetManager : MonoBehaviour
         Instance = this;
         SelectedBet = 5;
     }
+    private void Start()
+    {
+        SlotMachineController.Instance.OnSpinComplete += () =>
+        {
+            if (WalletManager.Instance.Balance < SelectedBet)
+            {
+                if (WalletManager.Instance.Balance >= Bet1Cost) SelectBet(Bet1Cost);
+                else if (WalletManager.Instance.Balance >= Bet2Cost) SelectBet(Bet2Cost);
+                else if (WalletManager.Instance.Balance >= Bet3Cost) SelectBet(Bet3Cost);
+            }
+        };
+    }
 
     public void SelectBet(int amount)
     {

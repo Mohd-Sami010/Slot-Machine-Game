@@ -4,9 +4,14 @@ using System.Collections;
 public class ReelController : MonoBehaviour
 {    
     [Header("Symbols Strip")]
+    [SerializeField] private GameObject highlightedSymbolBackground;
     [SerializeField] private SpriteRenderer topSymbol;
     [SerializeField] private SpriteRenderer middleSymbol;
     [SerializeField] private SpriteRenderer bottomSymbol;
+
+    [Header("Background Color")]
+    [SerializeField] private Color defaultBackgroundColor = Color.white;
+    [SerializeField] private Color highlightBackgroundColor = Color.yellow;
 
     [Header("Animation Settings")]
     [SerializeField] private float stepDuration = 0.08f;
@@ -31,10 +36,19 @@ public class ReelController : MonoBehaviour
 
         symbolSpacing = topPosition.y - middlePosition.y;
     }
+    private void Start()
+    {
+        WalletManager.Instance.OnCoinsAdded += () =>
+        {
+            highlightedSymbolBackground.GetComponent<SpriteRenderer>().color = highlightBackgroundColor;
+        };
+    }
     public void PlaySpin(Sprite[] sysmbols, Sprite finalSymbol, float fastSpinDuration)
     {
         if (IsSpinning) return;
 
+        highlightedSymbolBackground.GetComponent<SpriteRenderer>().color = defaultBackgroundColor;
+        highlightedSymbolBackground.SetActive(false);
         IsSpinning = true;
         availableSymbolSprites = sysmbols;
 
@@ -69,6 +83,8 @@ public class ReelController : MonoBehaviour
 
         IsSpinning = false;
         SlotMachineController.Instance.OnReelStopped();
+        highlightedSymbolBackground.SetActive(true);
+        highlightedSymbolBackground.GetComponent<SpriteRenderer>().color = defaultBackgroundColor;
     }
     private IEnumerator AnimateStep(float duration)
     {

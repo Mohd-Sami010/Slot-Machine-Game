@@ -31,13 +31,6 @@ public class SlotMachineController : MonoBehaviour
     public void Spin()
     {
         if (isSpinning) return;
-
-        if (BetManager.Instance == null || WalletManager.Instance == null || payoutManager == null ||
-            reels == null || reels.Length == 0 || symbols == null || symbols.Length == 0)
-        {
-            Debug.LogError("Slot machine is not configured!");
-            return;
-        }
         int bet = BetManager.Instance.SelectedBet;
 
         // Deduct bet BEFORE starting the spin.
@@ -90,10 +83,7 @@ public class SlotMachineController : MonoBehaviour
 
         int payout = payoutManager.CalculatePayout(finalCombination, CurrentSpinBet);
 
-        if (payout > 0)
-        {
-            WalletManager.Instance.AddCoins(payout);
-        }
+        if (payout > 0) WalletManager.Instance.AddCoins(payout);
         try
         {
             OnSpinComplete?.Invoke();

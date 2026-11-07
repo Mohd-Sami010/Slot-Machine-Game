@@ -82,5 +82,51 @@ public class GameUI : MonoBehaviour
     private void UpdateBetUI(int newBet)
     {
         betAmountText.text = newBet + "G";
+
+        EnableOrDisableBetButtons(newBet);
+        DisableOutOfBalanceBetButtons();
+    }
+    private void EnableOrDisableBetButtons(int newBet)
+    {
+        if (newBet == BetManager.Instance.Bet1Cost)
+        {
+            bet1Button.interactable = false;
+            bet2Button.interactable = true;
+            bet3Button.interactable = true;
+        }
+        else if (newBet == BetManager.Instance.Bet2Cost)
+        {
+            bet1Button.interactable = true;
+            bet2Button.interactable = false;
+            bet3Button.interactable = true;
+        }
+        else if (newBet == BetManager.Instance.Bet3Cost)
+        {
+            bet1Button.interactable = true;
+            bet2Button.interactable = true;
+            bet3Button.interactable = false;
+        }
+    }
+    private void DisableOutOfBalanceBetButtons()
+    {
+        bet1Text.color = Color.white;
+        bet2Text.color = Color.white;
+        bet3Text.color = Color.white;
+
+        if (BetManager.Instance.Bet1Cost > WalletManager.Instance.Balance)
+        {
+            bet1Button.interactable = false;
+            bet1Text.color = Color.red;
+        }
+        if (BetManager.Instance.Bet2Cost > WalletManager.Instance.Balance)
+        {
+            bet2Button.interactable = false;
+            bet2Text.color = Color.red;
+        }
+        if (BetManager.Instance.Bet3Cost > WalletManager.Instance.Balance)
+        {
+            bet3Button.interactable = false;
+            bet3Text.color = Color.red;
+        }
     }
 }
