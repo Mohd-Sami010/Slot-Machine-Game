@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameUI : MonoBehaviour
 {
     [SerializeField] private GameObject betButtonsPanel;
+    [SerializeField] private Button quitButton;
     [Header("UI Text")]
     [SerializeField] private TextMeshProUGUI balanceText;
     [SerializeField] private TextMeshProUGUI betAmountText;
@@ -51,6 +52,10 @@ public class GameUI : MonoBehaviour
         });
         bet3Button.onClick.AddListener(() => {
             BetManager.Instance.SelectBet(BetManager.Instance.Bet3Cost);
+        });
+        quitButton.onClick.AddListener(() => {
+            quitButton.interactable = false;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         });
     }
     private void OnSpinStarted()
