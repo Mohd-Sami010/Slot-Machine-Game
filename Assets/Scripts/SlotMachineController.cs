@@ -93,10 +93,7 @@ public class SlotMachineController : MonoBehaviour
         if (payout > 0)
         {
             WalletManager.Instance.AddCoins(payout);
-            Debug.Log($"YOU WIN! Payout: {payout}G");
         }
-        else Debug.Log("No winning combination.");
-
         try
         {
             OnSpinComplete?.Invoke();

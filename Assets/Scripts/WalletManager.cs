@@ -13,6 +13,7 @@ public class WalletManager : MonoBehaviour
     public int Score { get; private set;}
 
     public event Action<int> OnBalanceChanged;
+    public event Action OnCoinsAdded;
 
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class WalletManager : MonoBehaviour
         if (Balance > Score) Score = Balance;
         if (Balance > PlayerPrefs.GetInt("HighScore", 0)) PlayerPrefs.SetInt("HighScore", Balance);
         UpdateBalanceUI();
+        OnCoinsAdded?.Invoke();
     }
 
     private void UpdateBalanceUI()

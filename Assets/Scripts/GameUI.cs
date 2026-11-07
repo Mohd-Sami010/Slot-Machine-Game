@@ -20,11 +20,21 @@ public class GameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bet2Text;
     [SerializeField] private TextMeshProUGUI bet3Text;
 
+    [Header("Animators")]
+    [SerializeField] private Animator balanceTextAnimator;
+    [SerializeField] private Animator betButtonsAnimator;
+
     private void Start()
     {
         SlotMachineController.Instance.OnSpin += OnSpinStarted;
         SlotMachineController.Instance.OnSpinComplete += OnSpinComplete;
+
         WalletManager.Instance.OnBalanceChanged += UpdateBalanceUI;
+        WalletManager.Instance.OnCoinsAdded += () =>
+        {
+            balanceTextAnimator.SetTrigger("CoinsAdded");   
+        };
+
         BetManager.Instance.OnBetChanged += UpdateBetUI;
 
         UpdateBalanceUI(WalletManager.Instance.Balance);
@@ -46,16 +56,22 @@ public class GameUI : MonoBehaviour
             BetManager.Instance.SelectBet(BetManager.Instance.Bet3Cost);
             clickLeverPrompt.SetActive(true);
         });
-        clickLeverPrompt.SetActive(false);
     }
     private void OnSpinStarted()
     {
         clickLeverPrompt.SetActive(false);
+        
+        betButtonsAnimator.SetTrigger("Hide");
+        Invoke(nameof(DeactiveBetButtons), 0.2f);
+    }
+    private void DeactiveBetButtons()
+    {
         betButtonsPanel.SetActive(false);
     }
     private void OnSpinComplete()
     {
         betButtonsPanel.SetActive(true);
+        betButtonsAnimator.SetTrigger("Show");
     }
 
     private void UpdateBalanceUI(int newBalance)
