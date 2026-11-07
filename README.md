@@ -1,6 +1,7 @@
+![Game Screenshot](https://img.itch.zone/aW1hZ2UvNTMxNjI2OS8zMTk0MDk5Ny5wbmc=/794x1000/aYtQdE.png)
 # Unity Slot Machine Game
 
-[[Link]]
+### [Play on Itch.io](https://samicode-games.itch.io/slot-machine-game)
 
 A 2D slot machine game developed using **Unity and C#** as part of Underpin  game development internship assessment.
 
